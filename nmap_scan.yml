@@ -1,0 +1,26 @@
+---
+- name: NMAP Scan Lab
+  hosts: webservers
+  become: yes
+
+  tasks:
+    - name: Install nmap
+      apt:
+        name: nmap
+        state: present
+        update_cache: yes
+
+    - name: Copy targets file
+      copy:
+        src: targets.txt
+        dest: /tmp/targets.txt
+        owner: root
+        mode: '0644'
+
+    - name: Run nmap scan
+      command: nmap -iL /tmp/targets.txt
+      register: scan_result
+
+    - name: Show scan results
+      debug:
+        msg: "{{ scan_result.stdout_lines }}"
