@@ -4,11 +4,14 @@
   become: yes
 
   tasks:
+    - name: Update apt cache
+      apt:
+        update_cache: true
+
     - name: Install nmap
       apt:
         name: nmap
         state: present
-        update_cache: yes
 
     - name: Copy targets file
       copy:
